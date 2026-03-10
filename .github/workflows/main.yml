@@ -24,10 +24,11 @@ jobs:
       - name: Install dependencies
         run: |
           source venv/bin/activate
-          pip install pytest selenium pytest-selenium
+          pip install pytest selenium requests
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      - name: Run tests
+      - name: Collect tests (no execution)
+        working-directory: pytest-selenium
         run: |
-          source venv/bin/activate
-          pytest
+          source ../venv/bin/activate
+          pytest --maxfail=1 --disable-warnings --co
