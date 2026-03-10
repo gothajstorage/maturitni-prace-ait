@@ -43,7 +43,7 @@ jobs:
       - name: Install Python dependencies
         run: |
           source venv/bin/activate
-          pip install pytest selenium requests
+          pip install pytest pytest-cov ruff selenium requests
 
       - name: Install backend dependencies
         working-directory: apps/server
@@ -96,7 +96,13 @@ jobs:
           # give dev server time to boot
           sleep 20
 
-      - name: Run pytest-selenium tests
+      - name: Lint tests with ruff
+        working-directory: pytest-selenium
+        run: |
+          source ../venv/bin/activate
+          ruff check .
+
+      - name: Run pytest-selenium tests with coverage
         working-directory: pytest-selenium
         env:
           BACKEND_BASE_URL: http://localhost:3000
@@ -104,7 +110,7 @@ jobs:
           SELENIUM_HEADLESS: "1"
         run: |
           source ../venv/bin/activate
-          pytest
+          pytest --cov=. --cov-report=xml
 
       - name: Stop servers
         if: always()
