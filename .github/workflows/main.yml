@@ -110,7 +110,7 @@ jobs:
           SELENIUM_HEADLESS: "1"
         run: |
           source ../venv/bin/activate
-          pytest --cov=. --cov-report=xml
+          pytest --cov=. --cov-report=term-missing --cov-report=xml
 
       - name: Stop servers
         if: always()
