@@ -2,7 +2,8 @@ name: Run Selenium Pytest
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -10,26 +11,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: "3.10"
 
-      - name: Create virtual environment
-        run: |
-          python -m venv venv
+      - name: Create venv
+        run: python -m venv venv
 
-      - name: Activate venv and install dependencies
+      - name: Install dependencies
         run: |
           source venv/bin/activate
-          pip install --upgrade pip
           pip install pytest selenium pytest-selenium
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      - name: Run pytest in pytest-selenium folder
+      - name: Run tests
         run: |
           source venv/bin/activate
           pytest pytest-selenium
